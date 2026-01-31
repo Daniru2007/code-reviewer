@@ -29,12 +29,23 @@ function exitScope(){
     currentScope = currentScope.parent;
 }
 
+function checkShadows(id, scope = currentScope){
+    if (!scope.parent) return false;
+    if (scope.parent.declarations.has(id)){
+        return true;
+    };
+    return checkShadows(id, scope.parent);
+}
+
 const code = `
 class TestClass {
     
 }
 function square(n) {
   let camelCase = 10;
+  function testFunction() {
+    let camelCase = 20;
+  }
   return n * camelCase;
 }`;
 
@@ -79,6 +90,9 @@ traverse(ast, {
         let id = path.node.declarations[0].id.name;
         NamingConventionChecker(id, path.node.kind);
         currentScope.declarations.add(id);
+        if(checkShadows(id)){
+            console.log(`    -> Warning: "${id}" shadows a variable in an outer scope.`);
+        }
     },
     FunctionDeclaration: {
         enter(path) {
