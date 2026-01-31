@@ -2,13 +2,40 @@ import * as parser from "@babel/parser";
 import traverseModule from "@babel/traverse";
 const traverse = traverseModule.default;
 
+
+class Scope{
+    constructor(parent = null){
+        this.parent = parent;
+        this.declarations = new Set();
+        this.references = new Set();
+    };
+}
+
+let currentScope = null;
+
+function enterScope(){
+    currentScope = new Scope(currentScope);
+}
+function exitScope(){
+    for (const decl of currentScope.declarations){
+        if(!currentScope.references.has(decl)){
+            console.log(`Warning: "${decl}" is declared but never used.`);
+        };
+    };
+    if(!currentScope.parent) return;
+    for (const ref of currentScope.references){
+        currentScope.parent.references.add(ref);
+    };
+    currentScope = currentScope.parent;
+}
+
 const code = `
 class TestClass {
     
 }
 function square(n) {
   let camelCase = 10;
-  return n * n;
+  return n * camelCase;
 }`;
 
 function NamingConventionChecker(name, type){
@@ -44,14 +71,32 @@ function NamingConventionChecker(name, type){
 const ast = parser.parse(code);
 
 traverse(ast, {
+    Program: {
+        enter() { enterScope(); },
+        exit() { exitScope(); }
+    },
     VariableDeclaration(path) {
         let id = path.node.declarations[0].id.name;
         NamingConventionChecker(id, path.node.kind);
+        currentScope.declarations.add(id);
     },
-    FunctionDeclaration(path) {
-        NamingConventionChecker(path.node.id.name, 'function');
+    FunctionDeclaration: {
+        enter(path) {
+            NamingConventionChecker(path.node.id.name, 'function');
+            currentScope.declarations.add(path.node.id.name);
+            enterScope();
+        },
+        exit() { exitScope(); }
     },
     ClassDeclaration(path) {
         NamingConventionChecker(path.node.id.name, 'class');
+    },
+    Identifier(path) {
+        if (
+            path.parent.type !== "VariableDeclarator" &&
+            path.parent.type !== "FunctionDeclaration"
+        ) {
+            currentScope.references.add(path.node.name);
+        }
     }
 });
