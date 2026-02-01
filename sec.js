@@ -1,7 +1,7 @@
 import * as parser from "@babel/parser";
 import traverseModule from "@babel/traverse";
 const traverse = traverseModule.default;
-
+import fs from 'fs';
 
 class Scope{
     constructor(parent = null){
@@ -37,17 +37,7 @@ function checkShadows(id, scope = currentScope){
     return checkShadows(id, scope.parent);
 }
 
-const code = `
-class TestClass {
-    
-}
-function square(n) {
-  let camelCase = 10;
-  function testFunction() {
-    let camelCase = 20;
-  }
-  return n * camelCase;
-}`;
+const code = fs.readFileSync('./example.js', 'utf8');
 
 function NamingConventionChecker(name, type){
     /*
@@ -87,6 +77,7 @@ traverse(ast, {
         exit() { exitScope(); }
     },
     VariableDeclaration(path) {
+        // TODO fix path.node.declarations[0].id.name for multiple declarations
         let id = path.node.declarations[0].id.name;
         NamingConventionChecker(id, path.node.kind);
         currentScope.declarations.add(id);
