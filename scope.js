@@ -6,7 +6,7 @@ class Scope{
     };
 }
 
-export class AnalyzerContext{
+export default class AnalyzerContext{
     constructor(){
         this.globalScope = new Scope();
         this.currentScope = this.globalScope;
