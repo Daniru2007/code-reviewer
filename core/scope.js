@@ -17,6 +17,14 @@ export default class AnalyzerContext{
         this.issues.push(issue);
     }
 
+    addDeclaration(node){
+        this.currentScope.declarations.add(node);
+    }
+
+    addReference(node){
+        this.currentScope.references.add(node);
+    }
+
     enterScope(){
         this.currentScope = new Scope(this.currentScope);
     }

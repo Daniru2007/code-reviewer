@@ -1,7 +1,7 @@
 class TestClass {
     
 }
-function square(n) {
+function square(n, yell=20) {
   let PamelCase = 10;
   function TestFunction() {
     let camelCase = 20;

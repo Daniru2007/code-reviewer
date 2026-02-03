@@ -4,6 +4,29 @@ import NamingConventionChecker from "../rules/conventionChecker.js"
 import { Kinds, ASTKindMap } from "./types.js";
 const traverse = traverseModule.default;
 
+function extractIdentifiers(param) {
+    const identifiers = [];
+
+    if (param.type === "Identifier") {
+        identifiers.push(param);
+    } else if (param.type === "AssignmentPattern") {
+        identifiers.push(...extractIdentifiers(param.left));
+    } else if (param.type === "ObjectPattern") {
+        for (const prop of param.properties) {
+            if (prop.value) {
+                identifiers.push(...extractIdentifiers(prop.value));
+            }
+        }
+    } else if (param.type === "ArrayPattern") {
+        for (const elem of param.elements) {
+            if (elem) identifiers.push(...extractIdentifiers(elem));
+        }
+    }
+
+    return identifiers;
+}
+
+
 export default function analyze(ast) {
     const context = new AnalyzerContext();
     traverse(ast, {
@@ -17,6 +40,7 @@ export default function analyze(ast) {
                 if (issue) {
                     context.addIssue(issue);
                 }
+                context.addDeclaration(node);
             }
         },
         FunctionDeclaration: {
@@ -25,10 +49,13 @@ export default function analyze(ast) {
                 if (issue) {
                     context.addIssue(issue);
                 }
+                context.addDeclaration(path.node);
                 for (const param of path.node.params) {
-                    const issue = NamingConventionChecker(Kinds.PARAMETER, param);
-                    if (issue) {
-                        context.addIssue(issue);
+                    const ids = extractIdentifiers(param);
+                    for (const id of ids) {
+                        const issue = NamingConventionChecker(Kinds.PARAMETER, id);
+                        if (issue) context.addIssue(issue);
+                        context.addDeclaration(id);
                     }
                 }
                 context.enterScope();
@@ -40,8 +67,15 @@ export default function analyze(ast) {
             if (issue) {
                 context.addIssue(issue);
             }
+            context.addDeclaration(path.node);
         },
         Identifier(path) {
+            if (
+                path.parent.type !== "VariableDeclarator" &&
+                path.parent.type !== "FunctionDeclaration"
+            ) {
+                context.addReference(path.node);
+            }
         }
     });
 
