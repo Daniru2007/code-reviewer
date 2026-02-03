@@ -26,17 +26,32 @@ export default function NamingConventionChecker(type, node) {
         case Kinds.PARAMETER:
         case Kinds.FUNCTION:
             if (!checkCamelCase(name)) {
-                return new Issue(Rules.NAMING, ErrorCodes.NAMING_CAMEL, node, Severity.WARNING);
+                return new Issue({
+                    rule: Rules.NAMING,
+                    code: ErrorCodes.NAMING_CAMEL,
+                    node: node,
+                    severity: Severity.WARNING
+                });
             }
             break;
         case Kinds.CLASS:
             if (!checkPascalCase(name)) {
-                return new Issue(Rules.NAMING, ErrorCodes.NAMING_PASCAL, node, Severity.WARNING);
+                return new Issue({
+                    rule: Rules.NAMING,
+                    code: ErrorCodes.NAMING_PASCAL,
+                    node: node,
+                    severity: Severity.WARNING
+                });
             }
             break;
         case Kinds.CONST:
             if (!checkScreamingSnakeCase(name)) {
-                return new Issue(Rules.NAMING, ErrorCodes.NAMING_SCREAMING, node, Severity.WARNING);
+                return new Issue({
+                    rule: Rules.NAMING,
+                    code: ErrorCodes.NAMING_SCREAMING,
+                    node: node,
+                    severity: Severity.WARNING
+                });
             }
             break;
     }

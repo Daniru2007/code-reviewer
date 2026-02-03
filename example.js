@@ -2,7 +2,7 @@ class TestClass {
     
 }
 function square(n) {
-  let camelCase = 10;
+  let PamelCase = 10;
   function TestFunction() {
     let camelCase = 20;
   }

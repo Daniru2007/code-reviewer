@@ -21,11 +21,10 @@ export function logIssues(issues, file = "") {
         // Extract name and kind from node
         const node = issue.node;
         const name = node?.name ?? node?.id?.name ?? "unknown";
-        const kind = node?.kind ?? "symbol"; // optional: you could add kind to node
 
         // Get template message from JSON or fallback to generic message
         const template = messages[issue.code] || "Unknown issue: {name}";
-        const msg = format(template, { name, kind });
+        const msg = format(template, { name});
 
         const loc = issue.location ? `${issue.location.line}:${issue.location.column}` : "";
         const filePrefix = file ? `${file}:` : "";
