@@ -21,23 +21,22 @@ export default function NamingConventionChecker(type, node) {
 
     const name = node.name ?? node.id?.name;
     const loc = node.loc ?? node.id?.loc;
-    console.log(`[${type}:${name}]`);
     switch (type) {
         case Kinds.VARIABLE:
         case Kinds.PARAMETER:
         case Kinds.FUNCTION:
             if (!checkCamelCase(name)) {
-                return Issue(Rules.NAMING, ErrorCodes.NAMING_CAMEL, node, Severity.WARNING);
+                return new Issue(Rules.NAMING, ErrorCodes.NAMING_CAMEL, node, Severity.WARNING);
             }
             break;
         case Kinds.CLASS:
             if (!checkPascalCase(name)) {
-                return Issue(Rules.NAMING, ErrorCodes.NAMING_PASCAL, node, Severity.WARNING);
+                return new Issue(Rules.NAMING, ErrorCodes.NAMING_PASCAL, node, Severity.WARNING);
             }
             break;
         case Kinds.CONST:
             if (!checkScreamingSnakeCase(name)) {
-                return Issue(Rules.NAMING, ErrorCodes.NAMING_SCREAMING, node, Severity.WARNING);
+                return new Issue(Rules.NAMING, ErrorCodes.NAMING_SCREAMING, node, Severity.WARNING);
             }
             break;
     }

@@ -13,21 +13,33 @@ export default function analyze(ast) {
         },
         VariableDeclaration(path) {
             for (const node of path.node.declarations) {
-                NamingConventionChecker(ASTKindMap[path.node.kind], node);
+                const issue = NamingConventionChecker(ASTKindMap[path.node.kind], node);
+                if (issue) {
+                    context.addIssue(issue);
+                }
             }
         },
         FunctionDeclaration: {
-            enter(path) { 
-                NamingConventionChecker(Kinds.FUNCTION, path.node);
-                for (const param of path.node.params){
-                    NamingConventionChecker(Kinds.PARAMETER, param);
+            enter(path) {
+                const issue = NamingConventionChecker(Kinds.FUNCTION, path.node);
+                if (issue) {
+                    context.addIssue(issue);
                 }
-                context.enterScope(); 
+                for (const param of path.node.params) {
+                    const issue = NamingConventionChecker(Kinds.PARAMETER, param);
+                    if (issue) {
+                        context.addIssue(issue);
+                    }
+                }
+                context.enterScope();
             },
             exit() { context.exitScope(); }
         },
         ClassDeclaration(path) {
-            NamingConventionChecker(Kinds.CLASS, path.node);
+            const issue = NamingConventionChecker(Kinds.CLASS, path.node);
+            if (issue) {
+                context.addIssue(issue);
+            }
         },
         Identifier(path) {
         }

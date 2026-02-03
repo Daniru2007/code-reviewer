@@ -13,6 +13,10 @@ export default class AnalyzerContext{
         this.issues = [];
     }
 
+    addIssue(issue){
+        this.issues.push(issue);
+    }
+
     enterScope(){
         this.currentScope = new Scope(this.currentScope);
     }

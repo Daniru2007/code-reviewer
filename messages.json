@@ -1,0 +1,7 @@
+{
+  "NC001": "{kind} \"{name}\" should be in camelCase",
+  "NC002": "{kind} \"{name}\" should be in PascalCase",
+  "NC003": "{kind} \"{name}\" should be in SCREAMING_SNAKE_CASE",
+  "UV001": "{kind} \"{name}\" is declared but never used",
+  "SH001": "{kind} \"{name}\" shadows a variable in an outer scope"
+}
