@@ -10,10 +10,11 @@ export default class AnalyzerContext{
     constructor(){
         this.globalScope = new Scope();
         this.currentScope = this.globalScope;
+        this.issues = [];
     }
 
     enterScope(){
-        currentScope = new Scope(currentScope);
+        this.currentScope = new Scope(this.currentScope);
     }
 
     exitScope(){
@@ -22,11 +23,11 @@ export default class AnalyzerContext{
         //         console.log(`Warning: "${decl}" is declared but never used.`);
         //     };
         // };
-        if(!currentScope.parent) return;
-        for (const ref of currentScope.references){
-            currentScope.parent.references.add(ref);
+        if(!this.currentScope.parent) return;
+        for (const ref of this.currentScope.references){
+            this.currentScope.parent.references.add(ref);
         };
-        currentScope = currentScope.parent;
+        this.currentScope = this.currentScope.parent;
     }
 
 }

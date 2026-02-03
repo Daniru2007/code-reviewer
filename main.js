@@ -1,6 +1,6 @@
-import parse from "./parse.js";
-import analyze from "./analyzer.js";
-import readSource from "./reader.js";
+import parse from "./core/parse.js";
+import analyze from "./core/analyzer.js";
+import readSource from "./core/reader.js";
 
 
 function main(){
