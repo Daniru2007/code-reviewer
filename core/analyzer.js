@@ -2,6 +2,7 @@ import AnalyzerContext from "./scope.js";
 import traverseModule from "@babel/traverse";
 import NamingConventionChecker from "../rules/conventionChecker.js"
 import { Kinds, ASTKindMap } from "./types.js";
+import checkUnusedVars from "../rules/unusedVar.js";
 const traverse = traverseModule.default;
 
 function extractIdentifiers(param) {
@@ -32,7 +33,10 @@ export default function analyze(ast) {
     traverse(ast, {
         Program: {
             enter() { context.enterScope(); },
-            exit() { context.exitScope(); }
+            exit() {
+                checkUnusedVars(context);
+                context.exitScope();
+            }
         },
         VariableDeclaration(path) {
             for (const node of path.node.declarations) {
@@ -60,7 +64,10 @@ export default function analyze(ast) {
                 }
                 context.enterScope();
             },
-            exit() { context.exitScope(); }
+            exit() {
+                checkUnusedVars(context);
+                context.exitScope();
+            }
         },
         ClassDeclaration(path) {
             const issue = NamingConventionChecker(Kinds.CLASS, path.node);

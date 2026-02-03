@@ -30,11 +30,6 @@ export default class AnalyzerContext{
     }
 
     exitScope(){
-        // for (const decl of currentScope.declarations){
-        //     if(!currentScope.references.has(decl)){
-        //         console.log(`Warning: "${decl}" is declared but never used.`);
-        //     };
-        // };
         if(!this.currentScope.parent) return;
         for (const ref of this.currentScope.references){
             this.currentScope.parent.references.add(ref);
