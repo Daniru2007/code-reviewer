@@ -2,9 +2,10 @@ class TestClass {
     
 }
 function square(n, yell=20) {
-  let PamelCase = 10;
+  let x = 10;
+  let y = 20;
   function TestFunction() {
-    let camelCase = 20;
+    let x = 20;
   }
   return n * camelCase;
 }

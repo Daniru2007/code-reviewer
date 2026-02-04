@@ -3,6 +3,7 @@ import traverseModule from "@babel/traverse";
 import NamingConventionChecker from "../rules/conventionChecker.js"
 import { Kinds, ASTKindMap } from "./types.js";
 import checkUnusedVars from "../rules/unusedVar.js";
+import checkShadows from "../rules/shadowChecker.js";
 const traverse = traverseModule.default;
 
 function extractIdentifiers(param) {
@@ -44,6 +45,10 @@ export default function analyze(ast) {
                 if (issue) {
                     context.addIssue(issue);
                 }
+                const shadowed = checkShadows(node, context.currentScope)
+                if (shadowed) {
+                    context.addIssue(shadowed);
+                };
                 context.addDeclaration(node);
             }
         },
