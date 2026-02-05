@@ -4,6 +4,7 @@ import NamingConventionChecker from "../rules/conventionChecker.js"
 import { Kinds, ASTKindMap } from "./types.js";
 import checkUnusedVars from "../rules/unusedVar.js";
 import checkShadows from "../rules/shadowChecker.js";
+import { checkFunctionLength } from "../rules/functionLength.js";
 const traverse = traverseModule.default;
 
 function extractIdentifiers(param) {
@@ -66,6 +67,10 @@ export default function analyze(ast) {
                         if (issue) context.addIssue(issue);
                         context.addDeclaration(id);
                     }
+                }
+                const tooLong = checkFunctionLength(path.node);
+                if (tooLong) {
+                    context.addIssue(tooLong);
                 }
                 context.enterScope();
             },

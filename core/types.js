@@ -9,7 +9,8 @@ export const Severity = Object.freeze({
 export const Rules = Object.freeze({
   NAMING: "naming-convention",
   UNUSED: "unused-variable",
-  SHADOWING: "shadowing-variable"
+  SHADOWING: "shadowing-variable",
+  FUNCTION_LENGTH: "function-too-long"
 });
 
 // Error / issue codes (optional)
@@ -18,7 +19,8 @@ export const ErrorCodes = Object.freeze({
   NAMING_PASCAL: "NC002",
   NAMING_SCREAMING: "NC003",
   UNUSED_VAR: "UV001",
-  SHADOW_VAR: "SV001"
+  SHADOW_VAR: "SV001",
+  FUNC_LEN: "FL001"
 });
 
 // Semantic kinds for AST nodes

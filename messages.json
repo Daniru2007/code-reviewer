@@ -3,5 +3,6 @@
   "NC002": "\"{name}\" should be in PascalCase",
   "NC003": "\"{name}\" should be in SCREAMING_SNAKE_CASE",
   "UV001": "\"{name}\" is declared but never used",
-  "SV001": "\"{name}\" shadows a variable in an outer scope"
+  "SV001": "\"{name}\" shadows a variable in an outer scope",
+  "FL001": "\"{name}\" Function is too long"
 }

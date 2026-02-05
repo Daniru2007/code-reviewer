@@ -9,3 +9,76 @@ function square(n, yell=20) {
   }
   return n * camelCase;
 }
+
+function godFunction() {
+    let total = 0;
+    for (let i = 0; i < 100; i++) {
+        if (i % 2 === 0) {
+            total += i;
+        } else {
+            total -= i;
+        }
+    }
+
+    if (total > 50) {
+        console.log("Big number");
+    } else {
+        console.log("Small number");
+    }
+    if (total > 50) {
+        console.log("Big number");
+    } else {
+        console.log("Small number");
+    }
+    if (total > 50) {
+        console.log("Big number");
+    } else {
+        console.log("Small number");
+    }
+    if (total > 50) {
+        console.log("Big number");
+    } else {
+        console.log("Small number");
+    }
+    if (total > 50) {
+        console.log("Big number");
+    } else {
+        console.log("Small number");
+    }
+    if (total > 50) {
+        console.log("Big number");
+    } else {
+        console.log("Small number");
+    }
+    if (total > 50) {
+        console.log("Big number");
+    } else {
+        console.log("Small number");
+    }
+    if (total > 50) {
+        console.log("Big number");
+    } else {
+        console.log("Small number");
+    }
+    if (total > 50) {
+        console.log("Big number");
+    } else {
+        console.log("Small number");
+    }
+    if (total > 50) {
+        console.log("Big number");
+    } else {
+        console.log("Small number");
+    }
+    if (total > 50) {
+        console.log("Big number");
+    } else {
+        console.log("Small number");
+    }
+    if (total > 50) {
+        console.log("Big number");
+    } else {
+        console.log("Small number");
+    }
+    return total;
+}
