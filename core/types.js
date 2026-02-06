@@ -10,7 +10,8 @@ export const Rules = Object.freeze({
   NAMING: "naming-convention",
   UNUSED: "unused-variable",
   SHADOWING: "shadowing-variable",
-  FUNCTION_LENGTH: "function-too-long"
+  FUNCTION_LENGTH: "function-too-long",
+  DEPTH_EXCEED: "maximum-depth-exceeded"
 });
 
 // Error / issue codes (optional)
@@ -20,7 +21,8 @@ export const ErrorCodes = Object.freeze({
   NAMING_SCREAMING: "NC003",
   UNUSED_VAR: "UV001",
   SHADOW_VAR: "SV001",
-  FUNC_LEN: "FL001"
+  FUNC_LEN: "FL001",
+  DEP_EXC: "DPE001"
 });
 
 // Semantic kinds for AST nodes

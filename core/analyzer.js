@@ -4,8 +4,17 @@ import NamingConventionChecker from "../rules/conventionChecker.js"
 import { Kinds, ASTKindMap } from "./types.js";
 import checkUnusedVars from "../rules/unusedVar.js";
 import checkShadows from "../rules/shadowChecker.js";
-import { checkFunctionLength } from "../rules/functionLength.js";
 const traverse = traverseModule.default;
+
+function enterBlock(context, node) {
+    const tooLong = context.enterScope();
+    if (tooLong) {
+        if(!node.name)node.name = node.type;
+        tooLong.node = node;
+        context.addIssue(tooLong);
+    }
+}
+
 
 function extractIdentifiers(param) {
     const identifiers = [];
@@ -68,11 +77,13 @@ export default function analyze(ast) {
                         context.addDeclaration(id);
                     }
                 }
-                const tooLong = checkFunctionLength(path.node);
-                if (tooLong) {
-                    context.addIssue(tooLong);
+                enterBlock(context, path.node);
+
+                const max_depth = context.enterScope();
+                if (max_depth) {
+                    max_depth.node = path.node;
+                    context.addIssue(max_depth);
                 }
-                context.enterScope();
             },
             exit() {
                 checkUnusedVars(context);
@@ -93,6 +104,46 @@ export default function analyze(ast) {
             ) {
                 context.addReference(path.node);
             }
+        },
+
+        IfStatement: {
+            enter(path) { enterBlock(context, path.node) },
+            exit(path) { context.exitScope() }
+        },
+
+        ForStatement: {
+            enter(path) { enterBlock(context, path.node) },
+            exit(path) { context.exitScope() }
+        },
+
+        WhileStatement: {
+            enter(path) { enterBlock(context, path.node) },
+            exit(path) { context.exitScope() }
+        },
+
+        DoWhileStatement: {
+            enter(path) { enterBlock(context, path.node) },
+            exit(path) { context.exitScope() }
+        },
+
+        SwitchStatement: {
+            enter(path) { enterBlock(context, path.node) },
+            exit(path) { context.exitScope() }
+        },
+
+        TryStatement: {
+            enter(path) { enterBlock(context, path.node) },
+            exit(path) { context.exitScope() }
+        },
+
+        CatchClause: {
+            enter(path) { enterBlock(context, path.node) },
+            exit(path) { context.exitScope() }
+        },
+
+        ConditionalExpression: {   // ternary
+            enter(path) { enterBlock(context, path.node) },
+            exit(path) { context.exitScope() }
         }
     });
 
