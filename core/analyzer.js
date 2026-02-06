@@ -4,6 +4,7 @@ import NamingConventionChecker from "../rules/conventionChecker.js"
 import { Kinds, ASTKindMap } from "./types.js";
 import checkUnusedVars from "../rules/unusedVar.js";
 import checkShadows from "../rules/shadowChecker.js";
+import { checkParamLength } from "../rules/paramLength.js";
 const traverse = traverseModule.default;
 
 function enterBlock(context, node) {
@@ -69,6 +70,10 @@ export default function analyze(ast) {
                     context.addIssue(issue);
                 }
                 context.addDeclaration(path.node);
+                const max_param = checkParamLength(path.node);
+                if(max_param){
+                    context.addIssue(max_param)
+                }
                 for (const param of path.node.params) {
                     const ids = extractIdentifiers(param);
                     for (const id of ids) {
@@ -141,7 +146,7 @@ export default function analyze(ast) {
             exit(path) { context.exitScope() }
         },
 
-        ConditionalExpression: {   // ternary
+        ConditionalExpression: {
             enter(path) { enterBlock(context, path.node) },
             exit(path) { context.exitScope() }
         }

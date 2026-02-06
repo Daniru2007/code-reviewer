@@ -31,7 +31,7 @@
 //   }
 // }
 
-function godFunction() {
+function godFunction(a,b,c,d,e,f,g,h) {
   let total = 0;
   for (let i = 0; i < 100; i++) {
     if (i % 2 === 0) {
