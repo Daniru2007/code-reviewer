@@ -9,6 +9,19 @@ class Scope {
     };
 }
 
+class FunctionAnalysisScope extends Scope{
+    constructor(parent = null){
+        super(parent);
+        this.memberAccess = {};
+    }
+}
+
+class BlockScope extends Scope{
+    constructor(parent = null){
+        super(parent);
+    }
+}
+
 export default class AnalyzerContext {
     constructor() {
         this.globalScope = new Scope();
