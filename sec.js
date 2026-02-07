@@ -3,6 +3,7 @@ import traverseModule from "@babel/traverse";
 const traverse = traverseModule.default;
 import fs from 'fs';
 
+// check
 class Scope{
     constructor(parent = null){
         this.parent = parent;
