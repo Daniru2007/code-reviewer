@@ -83,12 +83,6 @@ export default function analyze(ast) {
                     }
                 }
                 enterBlock(context, path.node);
-
-                const max_depth = context.enterScope();
-                if (max_depth) {
-                    max_depth.node = path.node;
-                    context.addIssue(max_depth);
-                }
             },
             exit() {
                 checkUnusedVars(context);
