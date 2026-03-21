@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node --test"
+    "dev": "node main.js"
   },
   "keywords": [],
   "author": "",
