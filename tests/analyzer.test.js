@@ -49,6 +49,7 @@ test('analyze extracts identifiers from destructured and defaulted parameters', 
 function handleData({ ok: BadAlias }, [BadItem], BadAssigned = fallbackValue) {
   return BadAlias + BadItem + BadAssigned + fallbackValue;
 }
+handleData({ ok: 1 }, [2], 3);
 `;
 
   const issues = analyze(parse(code)).issues;
