@@ -256,6 +256,3 @@ npm test
 - `main.js` uses a hardcoded input file path (`./example.js`) and no CLI argument parsing.
 - No autofix support yet; output is reporting-only.
 
-## Legacy prototype (`sec.js`)
-
-`sec.js` appears to be an earlier standalone implementation of similar checks. It is useful for historical context, but the active implementation for tests and runtime is the modular pipeline in `core/` + `rules/`.
